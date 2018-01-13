@@ -35,7 +35,7 @@ FILE_LOADER:
 	{
 		dados = realloc(dados, num * sizeof(float));
 	}
-	dados = init_dados(nome_fich, &num, &val, dados);
+	init_dados(nome_fich, &num, &val, dados);
     //Se o nº de execuções for menor ou igual a 0, termina o programa
     if (runs <= 0)
         return 0;

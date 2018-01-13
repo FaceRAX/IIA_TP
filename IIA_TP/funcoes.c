@@ -31,7 +31,7 @@ int init_iniciais(char *nome_fich, int *n, float *v, int *isempty) {
 	return 0;
 }
 //Ler dados de ficheiro
-int* init_dados(char *nome_fich, int *n, float *v, float *dados) {
+int init_dados(char *nome_fich, int *n, float *v, float *dados) {
     
     FILE *f;
 	float aux=0;
@@ -49,5 +49,5 @@ int* init_dados(char *nome_fich, int *n, float *v, float *dados) {
 		qtd++;
 	}
 	fclose(f);
-	return dados;
+	return 0;
 }
