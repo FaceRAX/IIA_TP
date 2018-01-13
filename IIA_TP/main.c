@@ -3,7 +3,7 @@
 int main(int argc, char** argv) {
 	
     char nome_fich[100];
-    int runs, select, num, isempty;
+    int runs, select, tamDados, isempty;
     float val; 
 	float *dados = malloc(sizeof(float));
     //Lê argumentos de entrada
@@ -29,12 +29,10 @@ FILE_LOADER:
 			scanf(" %[^\n]", nome_fich);
         }
 	//Carrega o ficheiro para a memoria
-	init_iniciais(nome_fich, &num, &val,&isempty);
+	init_iniciais(nome_fich, &tamDados, &val, &isempty);
 	if (isempty)
 		goto FILE_LOADER;
-	else
-		dados = realloc(dados, num * sizeof(float));
-	init_dados(nome_fich, &num, &val, dados);
+	init_dados(nome_fich, &tamDados, &val, dados);
     //Se o nº de execuções for menor ou igual a 0, termina o programa
     if (runs <= 0)
         return 0;
@@ -49,9 +47,9 @@ FILE_LOADER:
 		printf (" 5 - Sair \n");
 		scanf ("%d",&select); 
 		if (select==1){
-			printf("%d %.2f\n", num, val);
+			printf("%d %.2f\n", tamDados, val);
 			_getch();
-			for (int i = 0; i < num; i++)
+			for (int i = 0; i < tamDados; i++)
 				printf("%.2f ", dados[i]);
 			printf("\n");
 			_getch();
