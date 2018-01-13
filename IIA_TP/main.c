@@ -3,7 +3,7 @@
 int main(int argc, char** argv) {
 	
     char nome_fich[100];
-    int runs, select, *num, isempty;
+    int runs, select, num, isempty;
     float val; 
 	float *dados = malloc(sizeof(float));
     //Lê argumentos de entrada
@@ -28,9 +28,14 @@ FILE_LOADER:
 			scanf(" %[^\n]", nome_fich);
         }
 	//Carrega o ficheiro para a memoria
-	dados = init_dados(nome_fich, &num, &val, dados, &isempty);
+	init_iniciais(nome_fich, &num, &val,&isempty);
 	if (isempty)
 		goto FILE_LOADER;
+	else
+	{
+		dados = realloc(dados, num * sizeof(float));
+	}
+	dados = init_dados(nome_fich, &num, &val, dados);
     //Se o nº de execuções for menor ou igual a 0, termina o programa
     if (runs <= 0)
         return 0;
@@ -79,4 +84,3 @@ RESTARTER:
 FINISH:   
     return (EXIT_SUCCESS);
 }
-
