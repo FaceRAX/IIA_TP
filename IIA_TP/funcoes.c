@@ -1,12 +1,18 @@
 #include "base.h"
 
+//Apaga ecra
+void clrscr()
+{
+	system("@cls||clear");
+}
+
 //gera números aleatórios
 void init_rand(){
     srand((unsigned)time(NULL));
 }
 
 //Ler dados de ficheiro
-int* init_dados(char *nome_fich, int *n, float *v, float *dados) {
+int* init_dados(char *nome_fich, int *n, float *v, float *dados, int *isempty) {
     
     FILE *f;
 	float aux=0;
@@ -17,7 +23,13 @@ int* init_dados(char *nome_fich, int *n, float *v, float *dados) {
         printf("Erro no acesso ao ficheiro\n");
         return 0;
     }
-	fscanf(f, "%d %f\n", n, v);
+	if(fscanf(f, "%d %f\n", n, v) == 2)
+		*isempty = 0;
+	else
+	{
+		printf("ERRO: Nao foi possivel ler os primeiros parametros, escolha um ficheiro valido!\n");
+		*isempty = 1;
+	}
 	while (fscanf(f, "%f", &aux) && qtd < *n) 
 	{
 		
@@ -26,9 +38,6 @@ int* init_dados(char *nome_fich, int *n, float *v, float *dados) {
 		dados[qtd] = aux;
 		qtd++;
 	}
-    printf("%d ",*n);
-    printf("%.2f\n",*v);
-	_getch();
 	return dados;
     
     

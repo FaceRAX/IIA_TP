@@ -27,7 +27,9 @@
     <ClInclude Include="base.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="empty.txt" />
     <Text Include="fdz.txt" />
+    <Text Include="fdz2.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

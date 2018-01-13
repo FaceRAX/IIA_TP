@@ -34,5 +34,11 @@
     <Text Include="fdz.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="fdz2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="empty.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
