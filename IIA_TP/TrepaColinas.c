@@ -20,9 +20,9 @@ int total_moedas(float *sol, int tamSol) {
 int solucao_e_melhor(float *solAtual, float *solVizinha, int tamSol, int totalMoedas, int totalMoedasTmp, float quantia) {
 	float quantiaAtual = valor_total(solAtual, tamSol);
 	float quantiaVizinha = valor_total(solVizinha, tamSol);
-	if (quantiaAtual > quantia && quantiaVizinha < quantiaAtual)
+	if (quantiaAtual > quantia && quantiaVizinha < quantiaAtual && quantiaVizinha >= quantia)
 		return 1;
-	if (quantiaAtual < quantia && quantiaVizinha > quantiaAtual)
+	if (quantiaAtual < quantia && quantiaVizinha > quantiaAtual && quantiaVizinha <= quantia)
 		return 1;
 	if (quantiaAtual == quantia && totalMoedasTmp < totalMoedas)
 		return 1;
@@ -40,16 +40,19 @@ void gera_vizinho(float *solAtual, float *solVizinha, int tamSol, float *moedas,
 	for (int i = 0; i < 2; i++) {
 		if (rand() % 100 < 50) {
 			do {
-				posSol = (rand() % (tamSol - 1));
-				posMoedas = (rand() % (tamArrMoedas - 1));
+				posSol = (rand() % tamSol);
+				posMoedas = (rand() % tamArrMoedas );
 			} while (solVizinha[posSol] == moedas[posMoedas]);
 			solVizinha[posSol] = moedas[posMoedas];
 		}
 		else {
-			do {
-				posSol = (rand() % (tamSol - 1));
-			} while (solVizinha[posSol] == 0.0);
-			solVizinha[posSol] = 0.0;
+			int x = total_moedas(solVizinha, tamSol);
+			if (x > 0) {
+				do
+					posSol = (rand() % tamSol);
+				while (solVizinha[posSol] == 0.0);
+				solVizinha[posSol] = 0.0;
+			}
 		}
 	}
 }
@@ -59,54 +62,23 @@ void gera_vizinho(float *solAtual, float *solVizinha, int tamSol, float *moedas,
 // Parâmetros de saída: Custo da melhor solução encontrada
 int trepa_colinas(float *sol, int tamSol, float *moedas, int tamArrMoedas, int num_iter, float quantia)
 {
-	int totalMoedas, NovoTotalMoedas, i;
+	int totalMoedas, NovoTotalMoedas;
 	float *novaSol = malloc(sizeof(float)*tamSol);
-
 	if (novaSol == NULL) {
 		printf("Erro na alocacao de memoria.");
 		exit(1);
 	}
+
 	totalMoedas = total_moedas(sol, tamSol); // Avalia solução inicial
-	for (i = 0; i < num_iter; i++) {
+	for (int i = 0; i < num_iter; i++) {
 		gera_vizinho(sol, novaSol, tamSol, moedas, tamArrMoedas); // Gera solução vizinha
-		// Ficha 7 - 4.3 ----------> gera_vizinho2(sol, nova_sol, vert);
 		NovoTotalMoedas = total_moedas(novaSol, tamSol); // Avalia solução vizinha
-		// Fica com a solução vizinha se o custo diminuir (problema de minimização) em relação à solução atual
 		if (solucao_e_melhor(sol, novaSol, tamSol, totalMoedas, NovoTotalMoedas, quantia)) {
 			substitui(sol, novaSol, tamSol);
 			totalMoedas = NovoTotalMoedas;
 		}
-		//printf("%d -> %.2f\n", totalMoedas, valor_total(sol, tamSol));
 	}
+
 	free(novaSol);
 	return totalMoedas;
 }
-
-// Trepa colinas first-choice
-// Parâmetros de entrada: Solucao, sol, Matriz de adjacencias, mat, Número de vértices, vert, Número de iterações, num_iter
-// Parâmetros de saída: Custo da melhor solução encontrada
-/*int trepa_colinas_probabilistico(int sol[], int *mat, int vert, int num_iter)
-{
-	int *nova_sol, custo, custo_viz, i;
-	nova_sol = malloc(sizeof(int)*vert); // Aloca espaço em memória para guardar a nova solução
-	if (nova_sol == NULL) {
-		printf("Erro na alocacao de memoria");
-		exit(1);
-	}
-	custo = total_moedas(sol, mat, vert); // Avalia solução inicial
-	for (i = 0; i < num_iter; i++) {
-		gera_vizinho(sol, nova_sol, vert); // Gera solução vizinha
-		custo_viz = calcula_fit(nova_sol, mat, vert); // Avalia solução vizinha
-		// Fica com a solução vizinha se o custo diminuir (problema de minimização) em relação à solução atual
-		if (custo_viz <= custo) {
-			substitui(sol, nova_sol, vert);
-			custo = custo_viz;
-		}
-		else if (rand_01() < PROB) {
-				substitui(sol, nova_sol, vert);
-				custo = custo_viz;
-		}
-	}
-	free(nova_sol);
-	return custo; // Devolve o custo da melhor solução encontrada
-}*/

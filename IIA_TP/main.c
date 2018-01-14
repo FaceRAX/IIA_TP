@@ -35,17 +35,15 @@ FILE_LOADER:
 			scanf("%d", &num_iter);
 			printf("Nr. maximo de moedas: ");
 			scanf("%d", &tamMaxSol);*/
-			num_iter = 5000;	//--->  PARA TESTES!!!...
-			tamMaxSol = 10;	//--->  PARA TESTES!!!...
+			num_iter = 1000;	//--->  PARA TESTES!!!...
+			tamMaxSol = 100;	//--->  PARA TESTES!!!...
 			sol = malloc(sizeof(int)*tamMaxSol); // Aloca espaço para a solução
 			best = malloc(sizeof(int)*tamMaxSol); // Aloca espaço para a melhor solução
 			
 			for (k = 0; k < runs; k++) {
 				clrscr();
 				printf("Iteracao %d:\n", k);
-				do
-					gera_sol_inicial(sol, tamMaxSol, moedas, tamArrMoedas); //Gera a solucao inicial
-				while (total_moedas(sol, tamMaxSol) == 0);
+				gera_sol_inicial(sol, tamMaxSol, moedas, tamArrMoedas); //Gera a solucao inicial
 				printf("Solucao Inicial:\n");
 				escreve_sol(sol, tamMaxSol); //Mostra a solucao inicial
 				//Executa o algoritmo do trepa colinas
