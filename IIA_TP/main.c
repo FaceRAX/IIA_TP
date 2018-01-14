@@ -32,12 +32,12 @@ FILE_LOADER:
 		if (select==1){
 			clrscr();
 			int k;
-			/*printf("Nr. de iteracoes do trepa-colinas: ");
+			printf("Nr. de iteracoes do trepa-colinas: ");
 			scanf("%d", &num_iter);
 			printf("Nr. maximo de moedas: ");
-			scanf("%d", &tamMaxSol);*/
-			num_iter = 10000;	//--->  PARA TESTES!!!...
-			tamMaxSol = 6;	//--->  PARA TESTES!!!...
+			scanf("%d", &tamMaxSol);
+			/*num_iter = 10;	//--->  PARA TESTES!!!...
+			tamMaxSol = 6;	//--->  PARA TESTES!!!...*/
 			sol = malloc(sizeof(int)*tamMaxSol); // Aloca espaço para a solução
 			best = malloc(sizeof(int)*tamMaxSol); // Aloca espaço para a melhor solução
 			for (k = 0; k < runs; k++) {
