@@ -175,7 +175,7 @@ void evaluate(pchrom pop, struct info d, int mat[][1])
 	//		pop[i].fitness = eval_individual_reparado2(pop[i].p, d, mat, &pop[i].valido);
 }
 
-void gera_vizinho(int sol[], int solViz[], int mat[][1], int nGenes)
+void gera_vizinho_evol(int sol[], int solViz[], int mat[][1], int nGenes)
 {
 	int i, menorCustoIn, maiorCustoOut, p1, p2;
 

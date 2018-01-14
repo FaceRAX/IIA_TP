@@ -45,11 +45,11 @@ void init_dados(char *nome_fich, int *n, float *v, float *dados) {
 
 struct info init_struct_type(int n, float v, int mat[][1], float *moedas) {
 	struct info x;
-	char defaultvalues;
+	char defaultvalues = ' ';
 	float aux = 0;
 	int i, qtd = 0;
 	printf("Utilizar valores por defeito? (S/N)\n");
-	scanf("%c", &defaultvalues);
+	scanf(" %[^\n]", &defaultvalues);
 	if (defaultvalues == 'S' || defaultvalues == 's')
 	{
 		x.popsize = def_popsize;

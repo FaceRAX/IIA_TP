@@ -20,4 +20,8 @@ float rand_01();
 
 int flip();
 
+void clrscr();
+
 void evaluate(pchrom, struct info, int mat[][1]);
+
+void init_iniciais(char *nome_fich, int *n, float *v, int *isempty);

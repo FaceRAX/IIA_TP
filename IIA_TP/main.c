@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "base.h"
 
 int main(int argc, char** argv) {
@@ -6,8 +8,7 @@ int main(int argc, char** argv) {
 	struct info EA_param;
 	pchrom      pop = NULL, parents = NULL;
 	chrom       best_run, best_ever;
-	int         gen_actual, r, runs, i, inv, mat[MAX_OBJ][1];
-	float       mbf = 0.0;
+	int         gen_actual, r, i, inv, mat[MAX_OBJ][1];
     int runs = DEFAULT_RUNS, select, tamArrMoedas, tamMaxSol, isempty, num_iter, custo, best_custo;
     float val, mbf = 0.0;
 	float *moedas = malloc(sizeof(float)), *sol, *best;
@@ -76,10 +77,6 @@ FILE_LOADER:
 			free(best);
 		}
 		else if (select == 2) {
-			init_iniciais(nome_fich, &tamArrMoedas, &val, &isempty);
-			moedas = realloc(moedas, tamArrMoedas * sizeof(float));
-			init_dados(nome_fich, &tamArrMoedas, &val, moedas);
-			// Faz um ciclo com o número de execuções definidas
 			EA_param = init_struct_type(tamArrMoedas, val, mat, moedas);
 			for (r = 0; r < runs; r++)
 			{
@@ -145,6 +142,7 @@ FILE_LOADER:
 			printf("\n\nMBF: %f\n", mbf / r);
 			printf("\nMelhor solucao encontrada");
 			write_best(best_ever, EA_param);
+			_getch();
 		}
 	
 		else if (select==3)
