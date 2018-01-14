@@ -15,6 +15,7 @@ FILE_LOADER:
 	init_iniciais(nome_fich, &tamArrMoedas, &val, &isempty);
 	if (isempty)
 		goto FILE_LOADER;
+	moedas = (float*) realloc(moedas, tamArrMoedas * sizeof(float));
 	init_dados(nome_fich, &tamArrMoedas, &val, moedas);
     if (runs <= 0)
         return 0;
@@ -35,11 +36,10 @@ FILE_LOADER:
 			scanf("%d", &num_iter);
 			printf("Nr. maximo de moedas: ");
 			scanf("%d", &tamMaxSol);*/
-			num_iter = 1000;	//--->  PARA TESTES!!!...
-			tamMaxSol = 100;	//--->  PARA TESTES!!!...
+			num_iter = 10000;	//--->  PARA TESTES!!!...
+			tamMaxSol = 6;	//--->  PARA TESTES!!!...
 			sol = malloc(sizeof(int)*tamMaxSol); // Aloca espaço para a solução
 			best = malloc(sizeof(int)*tamMaxSol); // Aloca espaço para a melhor solução
-			
 			for (k = 0; k < runs; k++) {
 				clrscr();
 				printf("Iteracao %d:\n", k);
@@ -81,6 +81,7 @@ FILE_LOADER:
 		else
 			printf("OPCAO INVALIDA!\n");
     } while (1);
-FINISH:   
+FINISH:
+	free(moedas);
     return (0);
 }
