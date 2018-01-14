@@ -9,5 +9,4 @@
 #define DEFAULT_RUNS 10
 
 
-#endif /* BASE_H */
-
+#endif
