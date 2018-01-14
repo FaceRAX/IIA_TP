@@ -49,7 +49,7 @@ struct info init_struct_type(int n, float v, int mat[][1], float *moedas) {
 	float aux = 0;
 	int i, qtd = 0;
 	printf("Utilizar valores por defeito? (S/N)\n");
-	scanf(" %[^\n]", &defaultvalues);
+	scanf(" %c", &defaultvalues);
 	if (defaultvalues == 'S' || defaultvalues == 's')
 	{
 		x.popsize = def_popsize;
