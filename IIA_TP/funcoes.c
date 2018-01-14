@@ -42,3 +42,43 @@ void init_dados(char *nome_fich, int *n, float *v, float *dados) {
 	}
 	fclose(f);
 }
+
+struct info init_struct_type(int n, float v, int mat[][1], float *moedas) {
+	struct info x;
+	char defaultvalues;
+	float aux = 0;
+	int i, qtd = 0;
+	printf("Utilizar valores por defeito? (S/N)\n");
+	scanf("%c", &defaultvalues);
+	if (defaultvalues == 'S' || defaultvalues == 's')
+	{
+		x.popsize = def_popsize;
+		x.pm = def_pm;
+		x.pr = def_pr;
+		x.tsize = def_tsize;
+		x.ro = def_ro;
+		x.moedas = n;
+		x.capacity = v;
+		x.numGenerations = def_max_gen;
+	}
+	else
+	{
+		printf("Tamanho da populacao: ");
+		scanf("%f", &x.popsize);
+		printf("Probabilidade de mutacao: ");
+		scanf("%f", &x.pm);
+		printf("Probabilidade de recombinacao: ");
+		scanf("%f", &x.pr);
+		printf("Tamanho do torneio para selecao do pai da proxima geracao: ");
+		scanf("%d", &x.tsize);
+		printf("Constante para avaliacao com penalizacao (ro): ");
+		scanf("%f", &x.ro);
+		x.moedas = n;
+		x.capacity = v;
+		printf("Numero de geracoes: ");
+		scanf("%d", &x.numGenerations);
+		for (i = 0; i < x.moedas; i++)
+			mat[i][0] = moedas[i];
+	}
+	return x;
+}

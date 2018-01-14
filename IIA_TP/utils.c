@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "utils.h"
+#include "base.h"
 
 float valor_total(float *sol, int tamSol) {
 	float total = 0;
@@ -40,4 +37,58 @@ void substitui(float a[], float b[], int n) {
 // Gera um valor inteiro aleatório entre min e max
 int random_l_h(int min, int max) {
 	return min + rand() % (max - min + 1);
+}
+
+int flip()
+{
+	if ((((float)rand()) / RAND_MAX) < 0.5)
+		return 0;
+	else
+		return 1;
+}
+
+pchrom init_pop(struct info d)
+{
+	int     i, j;
+	pchrom  indiv;
+
+	indiv = malloc(sizeof(chrom)*d.popsize);
+	if (indiv == NULL)
+	{
+		printf("Erro na alocacao de memoria\n");
+		exit(1);
+	}
+	for (i = 0; i<d.popsize; i++)
+	{
+		for (j = 0; j<d.moedas; j++)
+			indiv[i].p[j] = flip();
+	}
+	return indiv;
+}
+
+chrom get_best(pchrom pop, struct info d, chrom best)
+{
+	int i;
+
+	for (i = 0; i<d.popsize; i++)
+	{
+		if (best.fitness < pop[i].fitness)
+			best = pop[i];
+	}
+	return best;
+}
+
+float rand_01()
+{
+	return ((float)rand()) / RAND_MAX;
+}
+
+void write_best(chrom x, struct info d)
+{
+	int i;
+
+	printf("\nBest individual: %4.1f\n", x.fitness);
+	for (i = 0; i<d.moedas; i++)
+		printf("%d", x.p[i]);
+	putchar('\n');
 }

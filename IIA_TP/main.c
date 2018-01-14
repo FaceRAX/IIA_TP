@@ -1,9 +1,13 @@
 #include "base.h"
-#include "TrepaColinas.h"
 
 int main(int argc, char** argv) {
 	init_rand();
     char nome_fich[100];
+	struct info EA_param;
+	pchrom      pop = NULL, parents = NULL;
+	chrom       best_run, best_ever;
+	int         gen_actual, r, runs, i, inv, mat[MAX_OBJ][1];
+	float       mbf = 0.0;
     int runs = DEFAULT_RUNS, select, tamArrMoedas, tamMaxSol, isempty, num_iter, custo, best_custo;
     float val, mbf = 0.0;
 	float *moedas = malloc(sizeof(float)), *sol, *best;
@@ -15,20 +19,21 @@ FILE_LOADER:
 	init_iniciais(nome_fich, &tamArrMoedas, &val, &isempty);
 	if (isempty)
 		goto FILE_LOADER;
+	moedas = (float *)realloc(moedas, tamArrMoedas * sizeof(float));
 	init_dados(nome_fich, &tamArrMoedas, &val, moedas);
     if (runs <= 0)
         return 0;
 	do {
 		clrscr();
-		printf ("(Ficheiro carregado: %s)\n", nome_fich);
-		printf ("Que algoritmo pretende utilizar? \n");
-		printf (" 1 - Trepa-Colinas \n");
-		printf (" 2 - Evolutivo \n");
-		printf (" 3 - Hibrido \n");
-		printf (" 4 - Recarregar um ficheiro \n");
-		printf (" 5 - Sair \n");
-		scanf ("%d", &select); 
-		if (select==1){
+		printf("(Ficheiro carregado: %s)\n", nome_fich);
+		printf("Que algoritmo pretende utilizar? \n");
+		printf(" 1 - Trepa-Colinas \n");
+		printf(" 2 - Evolutivo \n");
+		printf(" 3 - Hibrido \n");
+		printf(" 4 - Recarregar um ficheiro \n");
+		printf(" 5 - Sair \n");
+		scanf("%d", &select);
+		if (select == 1) {
 			clrscr();
 			int k;
 			/*printf("Nr. de iteracoes do trepa-colinas: ");
@@ -39,7 +44,7 @@ FILE_LOADER:
 			tamMaxSol = 100;	//--->  PARA TESTES!!!...
 			sol = malloc(sizeof(int)*tamMaxSol); // Aloca espaço para a solução
 			best = malloc(sizeof(int)*tamMaxSol); // Aloca espaço para a melhor solução
-			
+
 			for (k = 0; k < runs; k++) {
 				clrscr();
 				printf("Iteracao %d:\n", k);
@@ -70,8 +75,78 @@ FILE_LOADER:
 			free(sol);
 			free(best);
 		}
-		else if (select==2)
-			printf("option2");
+		else if (select == 2) {
+			init_iniciais(nome_fich, &tamArrMoedas, &val, &isempty);
+			moedas = realloc(moedas, tamArrMoedas * sizeof(float));
+			init_dados(nome_fich, &tamArrMoedas, &val, moedas);
+			// Faz um ciclo com o número de execuções definidas
+			EA_param = init_struct_type(tamArrMoedas, val, mat, moedas);
+			for (r = 0; r < runs; r++)
+			{
+				printf("Repeticao %d\n", r + 1);
+				// Geração da população inicial
+				pop = init_pop(EA_param);
+				// Avalia a população inicial
+				evaluate(pop, EA_param, mat);
+				// Aplicação do algoritmo trepa colinas para refinar a população inicial
+				// Exercício 4.6(i)
+				//        trepa_colinas(pop, EA_param, mat);
+				// Como ainda não existe, escolhe-se como melhor solução a primeira da população (poderia ser outra qualquer)
+				best_run = pop[0];
+				// Encontra-se a melhor solução dentro de toda a população
+				best_run = get_best(pop, EA_param, best_run);
+				// Reserva espaço para os pais da população seguinte
+				parents = malloc(sizeof(chrom)*EA_param.popsize);
+				// Caso não consiga fazer a alocação, envia aviso e termina o programa
+				if (parents == NULL)
+				{
+					printf("Erro na alocacao de memoria\n");
+					exit(1);
+				}
+				// Ciclo de optimização
+				gen_actual = 1;
+				while (gen_actual <= EA_param.numGenerations)
+				{
+					// Torneio binário para encontrar os progenitores (ficam armazenados no vector parents)
+					tournament(pop, EA_param, parents);
+					// Torneio de k elementos, com k >= 2, para encontrar os progenitores (ficam armazenados no vector parents)
+					// Exercício 4.5
+					//            tournament_geral(pop, EA_param, parents);
+					// Aplica os operadores genéticos aos pais (os descendentes ficam armazenados na estrutura pop)
+					genetic_operators(parents, EA_param, pop);
+					// Avalia a nova população (a dos filhos)
+					evaluate(pop, EA_param, mat);
+					// Aplicação do algoritmo trepa colinas para refinar a população final
+					// Exercício 4.6(iii)
+					//            trepa_colinas(pop, EA_param, mat);
+					// Actualiza a melhor solução encontrada
+					best_run = get_best(pop, EA_param, best_run);
+					gen_actual++;
+				}
+				// Aplicação do algoritmo trepa colinas para refinar a população final
+				// Exercício 4.6(ii)
+				//        trepa_colinas(pop, EA_param, mat);
+				// Contagem das soluções inválidas
+				for (inv = 0, i = 0; i < EA_param.popsize; i++)
+					if (pop[i].valido == 0)
+						inv++;
+				// Escreve resultados da repetição que terminou
+				printf("\nRepeticao %d:", r);
+				write_best(best_run, EA_param);
+				printf("\nPercentagem Invalidos: %f\n", 100 * (float)inv / EA_param.popsize);
+				mbf += best_run.fitness;
+				if (r == 0 || best_run.fitness > best_ever.fitness)
+					best_ever = best_run;
+				// Liberta a memória usada
+				free(parents);
+				free(pop);
+			}
+			// Escreve resultados globais
+			printf("\n\nMBF: %f\n", mbf / r);
+			printf("\nMelhor solucao encontrada");
+			write_best(best_ever, EA_param);
+		}
+	
 		else if (select==3)
 			printf ("option3");
 		else if (select == 4)

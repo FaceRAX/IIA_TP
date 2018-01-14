@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include "TrepaColinas.h"
+#include "base.h"
 
 #define PROB 0.01 // probabilidade fixa do algoritmo do trepa-colinas probabilístico
 

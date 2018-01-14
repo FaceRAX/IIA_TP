@@ -30,6 +30,12 @@
     <ClCompile Include="main2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="func.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="evolutivo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h">
@@ -39,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TrepaColinas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="algoritmo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

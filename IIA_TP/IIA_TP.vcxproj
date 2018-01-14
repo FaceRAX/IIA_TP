@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="evolutivo.c" />
+    <ClCompile Include="func.c" />
     <ClCompile Include="funcoes.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="main2.c" />
@@ -26,6 +28,7 @@
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="algoritmo.h" />
     <ClInclude Include="base.h" />
     <ClInclude Include="TrepaColinas.h" />
     <ClInclude Include="utils.h" />
